@@ -114,6 +114,11 @@ class PULL:
 			cc += color
 		print( "%s[*]%s %s" % ( cc, self.END, tshow ) )
 
+	def ask(self, tshow, cc='', *colors):
+		for color in colors:
+			cc += color
+		return input( "%s[?]%s %s" % (cc, self.END, tshow) )
+
 	def halt(self, tshow, cc='', exit=1, *colors):
 		for color in colors:
 			cc += color

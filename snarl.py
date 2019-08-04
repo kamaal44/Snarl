@@ -56,12 +56,29 @@ class PARSER:
 			passw = pull.ask( "Enter Database Password: ", pull.PURPLE )
 
 			pull.uprun( "Checking Database Connection. Connecting!", pull.DARKCYAN )
-			pymysql.connect(serve, uname, passw, dbase)
-			sys.exit()
+			try:
+				pymysql.connect(serve, uname, passw, dbase)
+			except pymysql.err.OperationalError:
+				pull.halt( "Access Denied for the user. Check Credentials and Server Status!" )
+
+			config = CONFIG()
+			config.read()
+			config.dgen()
+			config.write()
 
 	def migrate(self, mig):
 		if mig:
-			sys.exit()
+			config = CONFIG()
+			config.read()
+			config.kgen()
+			config.write()
+			config.generate()
+			DJANGOCALL('makemigrations')
+			DJANGOCALL('migrate')
+		else:
+			config = CONFIG()
+			if not os.path.isfile( config.SETTPATH ):
+				pull.halt( "Application not yet initialized. Run the migrations first. See Manual!" )
 
 	def bind(self, bd):
 		if bd:
