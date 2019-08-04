@@ -13,6 +13,11 @@ from config import CONFIG
 from django.core.wsgi import get_wsgi_application as GETWSGI
 from django.core.management import call_command as DJANGOCALL
 
+config = CONFIG()
+config.read()
+config.write()
+sys.exit()
+
 pull = PULL()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Snarl.settings')
 logger = logging.getLogger( __name__ )
@@ -43,6 +48,7 @@ class PARSER:
 		self.bind      = self.bind(    opts.bind     )
 		self.port      = self.port(    opts.port     )
 		self.conn      = self.conn(    self.bind, self.port )
+		self.init      = self.initialize( self.bind )
 		self.signal    = signal.signal( signal.SIGINT, self.handler )
 
 	def handler(self, sig, fr):
@@ -72,13 +78,20 @@ class PARSER:
 			config.read()
 			config.kgen()
 			config.write()
-			config.generate()
+
+			self.initialize()
 			DJANGOCALL('makemigrations')
 			DJANGOCALL('migrate')
 		else:
 			config = CONFIG()
 			if not os.path.isfile( config.SETTPATH ):
 				pull.halt( "Application not yet initialized. Run the migrations first. See Manual!" )
+
+	def initiailize(self):
+		config = CONFIG()
+		config.read()
+		config.extend()
+		config.generate()
 
 	def bind(self, bd):
 		if bd:
@@ -110,6 +123,7 @@ def main():
 	parser.add_argument( '-v', '--verbose', dest="verbose"  , default=False, action="store_true" )
 	parser.add_argument( '--migrate'      , dest="migrate"  , default=False, action="store_true" )
 	parser.add_argument( '--configure'    , dest="configure", default=False, action="store_true" )
+	parser.add_argument( '-d', '--debug'  , dest="debug"    , default=False, action="store_true" )
 	options = parser.parse_args()
 	parser = PARSER( options )
 

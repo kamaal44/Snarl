@@ -30,11 +30,67 @@ class CONFIG:
 		fpath = os.path.join( self.BASEPATH, 'variables.py' )
 		ffile = open( fpath, "w" )
 		for key in list(self.VARIABLES.keys()):
-			ffile.write(
-				'{}="{}"\n'.format(
-					key,
-					self.VARIABLES[ key ]
-				)
-			)
+			ffile.write( key + "=" + repr(self.VARIABLES[key]) + "\n" )
 		ffile.close()
+
+	def generate(self):
+		ffile = open(self.SETTPATH, "w")
+		ffile.write( 'import os' )
+		ffile.write( 'BASE_DIR="{}"\n'.format( self.BASEPATH ) )
+		for key in list( self.VARIABLES.keys() ):
+			if key == "SECKEY":
+				ffile.write('SECRET_KEY={}\n'.format(repr(self.VARIABLES[ "SECKEY" ])))
+			elif key == "DEBUG":
+				ffile.write('DEBUG={}\n'.format(repr(self.VARIABLES[ "DEBUG" ])))
+			elif key == "ALLHOS":
+				ffile.write('ALLOWED_HOSTS={}\n'.format(repr(self.VARIABLES[ "ALLHOS" ])))
+			elif key == "INAPPS":
+				ffile.write('INSTALLED_APPS={}\n'.format(repr(self.VARIABLES[ "INAPPS" ])))
+			elif key == "MDWARE":
+				ffile.write('MIDDLEWARE={}\n'.format(repr(self.VARIABLES[ "MDWARE" ])))
+			elif key == "ULCONF":
+				ffile.write('ROOT_URLCONF={}\n'.format(repr(self.VARIABLES["ULCONF"])))
+			elif key == "TEMPLS":
+				ffile.write('TEMPLATES={}\n'.format(repr(self.VARIABLES["TEMPLS"])))
+			elif key == "WSGAPP":
+				ffile.write('WSGI_APPLICATIUON={}\n'.format(repr(self.VARIABLES["WSGAPP"])))
+			elif key == "DBASES":
+				ffile.write('DATABASES={}\n'.format(repr(self.VARIABLES["DBASES"])))
+			elif key == "AUVALI":
+				ffile.write('AUTH_PASSWORD_VALIDATORS={}\n'.format(repr(self.VARIABLES["AUVALI"])))
+			elif key == "LNCODE":
+				ffile.write('LANGUAGE_CODE={}\n'.format(repr(self.VARIABLES["LNCODE"])))
+			elif key == "TMZONE":
+				ffile.write('TIME_ZONE={}\n'.format(repr(self.VARIABLES["TMZONE"])))
+			elif key == "USIIBN":
+				ffile.write('USE_I18N={}\n'.format(repr(self.VARIABLES["USIIBN"])))
+			elif key == "USETZI":
+				ffile.write('USE_L10N={}\n'.format(repr(self.VARIABLES["USETZI"])))
+			elif key == "STAURL":
+				ffile.write('STATIC_URL={}\n'.format(repr(self.VARIABLES['STAURL'])))
+			elif key == "STROOT":
+				ffile.write('STATIC_ROOT'.format(repr(self.VARIABLES['STROOT'])))
+		ffile.close()
+
+	def extend(self):
+		if self.VARIABLES[ "DBNAME" ] and self.VARIABLES[ "DBSVER" ] and self.VARIABLES[ "DBUSER" ] and self.VARIABLES[ "DBPASS" ]:
+			self.VARIABLES[ "DBASES" ] = {
+    			'default': {
+        			'ENGINE': 'django.db.backends.mysql',
+        			'NAME': self.VARIABLES[ "DBNAME" ],
+        			'USER': self.VARIABLES[ "DBUSER" ],
+        			'PASSWORD': self.VARIABLES[ "DBPASS" ],
+        			'HOST': self.VARIABLES[ "DBSVER" ],
+        			'PORT': ''
+    			}
+			}
+		else:
+			self.VARIABLES[ "DBASES" ] = {
+    			'default': {
+        			'ENGINE': 'django.db.backends.sqlite3',
+        			'NAME': os.path.join(self.BASEPATH, 'db.sqlite3'),
+    				}
+			}
+		self.VARIABLES[ "STROOT" ] = os.path.join( self.BASEPATH, "static" )
+
 
