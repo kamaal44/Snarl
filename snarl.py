@@ -13,11 +13,6 @@ from config import CONFIG
 from django.core.wsgi import get_wsgi_application as GETWSGI
 from django.core.management import call_command as DJANGOCALL
 
-config = CONFIG()
-config.read()
-config.write()
-sys.exit()
-
 pull = PULL()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Snarl.settings')
 logger = logging.getLogger( __name__ )
