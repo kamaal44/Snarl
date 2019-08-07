@@ -18,7 +18,6 @@ class CONFIG:
 		key = self.VARIABLES.get( "SECKEY" )
 		if not key:
 			key = SECRET()
-			self.VARIABLES[ "SECKEY" ] = key
 
 	def dgen(self, dbse, serv, user, passw):
 		self.VARIABLES[ "DBNAME" ] = dbse
@@ -35,7 +34,7 @@ class CONFIG:
 
 	def generate(self):
 		ffile = open(self.SETTPATH, "w")
-		ffile.write( 'import os' )
+		ffile.write( 'import os\n\n' )
 		ffile.write( 'BASE_DIR="{}"\n'.format( self.BASEPATH ) )
 		for key in list( self.VARIABLES.keys() ):
 			if key == "SECKEY":
@@ -69,10 +68,10 @@ class CONFIG:
 			elif key == "STAURL":
 				ffile.write('STATIC_URL={}\n'.format(repr(self.VARIABLES['STAURL'])))
 			elif key == "STROOT":
-				ffile.write('STATIC_ROOT'.format(repr(self.VARIABLES['STROOT'])))
+				ffile.write('STATIC_ROOT={}\n'.format(repr(self.VARIABLES['STROOT'])))
 		ffile.close()
 
-	def extend(self):
+	def extend(self, addr):
 		if self.VARIABLES[ "DBNAME" ] and self.VARIABLES[ "DBSVER" ] and self.VARIABLES[ "DBUSER" ] and self.VARIABLES[ "DBPASS" ]:
 			self.VARIABLES[ "DBASES" ] = {
     			'default': {
@@ -92,5 +91,8 @@ class CONFIG:
     				}
 			}
 		self.VARIABLES[ "STROOT" ] = os.path.join( self.BASEPATH, "static" )
+		self.VARIABLES[ "ALLOWED_HOSTS" ] = []
+		if addr:
+			self.VARIABLES[ "ALLOWED_HOSTS" ].append( addr )
 
 

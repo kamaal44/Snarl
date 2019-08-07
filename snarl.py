@@ -1,6 +1,7 @@
 import re
 import os
 import sys
+import time
 import signal
 import socket
 import pymysql
@@ -69,23 +70,30 @@ class PARSER:
 
 	def migrate(self, mig):
 		if mig:
+			pull.uprun( "Migration Phase. Initializing File & Configurations. ", pull.YELLOW )
 			config = CONFIG()
 			config.read()
 			config.kgen()
 			config.write()
 
 			self.initialize()
-			DJANGOCALL('makemigrations')
-			DJANGOCALL('migrate')
+
+			time.sleep( 2 )
+			application = GETWSGI()
+
+			pull.uprun( "Configuration Done. Uprnning Migrations Now. ", pull.DARKCYAN )
+			DJANGOCALL('makemigrations', stdout=open( os.devnull, "w" ))
+			DJANGOCALL('migrate', stdout=open( os.devnull, "w" ))
+			pull.halt( "Migrations Applied Successfuly. Exiting Now!", pull.GREEN )
 		else:
 			config = CONFIG()
 			if not os.path.isfile( config.SETTPATH ):
 				pull.halt( "Application not yet initialized. Run the migrations first. See Manual!" )
 
-	def initiailize(self):
+	def initialize(self, addr=""):
 		config = CONFIG()
 		config.read()
-		config.extend()
+		config.extend( addr )
 		config.generate()
 
 	def bind(self, bd):
@@ -112,13 +120,13 @@ class PARSER:
 			pull.halt( "Not able to Bind to Address. Check Your Address & Port!", pull.RED, pull.BOLD )
 
 def main():
-	parser = argparse.ArgumentParser( add_help=False )
+	parser = argparse.ArgumentParser( add_help=True )
 	parser.add_argument( '-b', '--bind'   , dest="bind"     , default=None , type=str            )
 	parser.add_argument( '-p', '--port'   , dest="port"     , default=8080 , type=int            )
 	parser.add_argument( '-v', '--verbose', dest="verbose"  , default=False, action="store_true" )
+	parser.add_argument( '-d', '--debug'  , dest="debug"    , default=False, action="store_true" )
 	parser.add_argument( '--migrate'      , dest="migrate"  , default=False, action="store_true" )
 	parser.add_argument( '--configure'    , dest="configure", default=False, action="store_true" )
-	parser.add_argument( '-d', '--debug'  , dest="debug"    , default=False, action="store_true" )
 	options = parser.parse_args()
 	parser = PARSER( options )
 
