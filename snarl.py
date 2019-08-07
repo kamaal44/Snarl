@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import signal
+import django
 import socket
 import pymysql
 import logging
@@ -14,8 +15,8 @@ from config import CONFIG
 from django.core.wsgi import get_wsgi_application as GETWSGI
 from django.core.management import call_command as DJANGOCALL
 
-pull = PULL()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Snarl.settings')
+pull = PULL()
 logger = logging.getLogger( __name__ )
 logger.setLevel( logging.CRITICAL )
 
@@ -41,6 +42,7 @@ class PARSER:
 	def __init__(self, opts):
 		self.configure = self.configure( opts.configure )
 		self.migrate   = self.migrate( opts.migrate  )
+		self.cuser     = self.create( opts.cuser )
 		self.bind      = self.bind(    opts.bind     )
 		self.port      = self.port(    opts.port     )
 		self.conn      = self.conn(    self.bind, self.port )
@@ -78,7 +80,7 @@ class PARSER:
 
 			self.initialize()
 
-			time.sleep( 2 )
+			time.sleep( 3 )
 			application = GETWSGI()
 
 			pull.uprun( "Configuration Done. Uprnning Migrations Now. ", pull.DARKCYAN )
@@ -89,6 +91,20 @@ class PARSER:
 			config = CONFIG()
 			if not os.path.isfile( config.SETTPATH ):
 				pull.halt( "Application not yet initialized. Run the migrations first. See Manual!" )
+
+	def create(self, cuser):
+		if cuser:
+			django.setup()
+			from django.contrib.auth.models import User as SUPERUSER
+			uname = pull.ask( "Enter Username for the admin user: ", pull.YELLOW )
+			email = pull.ask( "Enter Email for the user: ", pull.YELLOW )
+			passw = pull.ask( "Enter Password for the user: ", pull.YELLOW )
+
+			if uname and passw:
+				SUPERUSER.objects.create_superuser( uname, email, passw )
+				pull.halt( "User Created Successfuly", pull.GREEN )
+			else:
+				pull.halt( "Username & Password Fields Are Mandatory & Must be Supplied", pull.RED )
 
 	def initialize(self, addr=""):
 		config = CONFIG()
@@ -127,6 +143,7 @@ def main():
 	parser.add_argument( '-d', '--debug'  , dest="debug"    , default=False, action="store_true" )
 	parser.add_argument( '--migrate'      , dest="migrate"  , default=False, action="store_true" )
 	parser.add_argument( '--configure'    , dest="configure", default=False, action="store_true" )
+	parser.add_argument( '--create-user'  , dest="cuser"    , default=False, action="store_true" )
 	options = parser.parse_args()
 	parser = PARSER( options )
 

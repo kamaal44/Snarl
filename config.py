@@ -18,6 +18,7 @@ class CONFIG:
 		key = self.VARIABLES.get( "SECKEY" )
 		if not key:
 			key = SECRET()
+			self.VARIABLES[ "SECKEY" ] = key
 
 	def dgen(self, dbse, serv, user, passw):
 		self.VARIABLES[ "DBNAME" ] = dbse
