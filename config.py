@@ -70,6 +70,10 @@ class CONFIG:
 				ffile.write('STATIC_URL={}\n'.format(repr(self.VARIABLES['STAURL'])))
 			elif key == "STROOT":
 				ffile.write('STATIC_ROOT={}\n'.format(repr(self.VARIABLES['STROOT'])))
+			elif key == "JMENUI":
+				ffile.write('JET_SIDE_MENU_ITEMS={}\n'.format(repr(self.VARIABLES['JMENUI'])))
+			elif key == "JDEFTH":
+				ffile.write('JET_DEFAULT_THEME={}\n'.format(repr(self.VARIABLES['JDEFTH'])))
 		ffile.close()
 
 	def extend(self, addr):

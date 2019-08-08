@@ -1,0 +1,3 @@
+django
+django-jet
+google-api-python-client==1.4.1
