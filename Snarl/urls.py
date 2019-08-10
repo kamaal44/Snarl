@@ -23,5 +23,5 @@ dashboard = DASHBOARD()
 urlpatterns = [
 	path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
-    path('dashboard/', dashboard),
+    path('dashboard/', dashboard.home),
 ]

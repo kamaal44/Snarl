@@ -95,6 +95,7 @@ class CONFIG:
         			'NAME': os.path.join(self.BASEPATH, 'db.sqlite3'),
     				}
 			}
+		self.VARIABLES[ "TEMPLS" ][0][ "DIRS" ] = [ os.path.join(self.BASEPATH, 'templates') ]
 		self.VARIABLES[ "STROOT" ] = os.path.join( self.BASEPATH, "static" )
 		self.VARIABLES[ "ALLOWED_HOSTS" ] = []
 		if addr:
