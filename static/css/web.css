@@ -2,4 +2,50 @@
 	margin: 0;
 	padding: 0;
 	overflow-x: hidden;
+	font-family: 'Roboto', sans-serif;
+	box-sizing: border-box;
+}html, body{
+	overflow-x: hidden;
+}.nav-container{
+	display: block;
+	width: 100%;
+	height: 40px;
+	background-color: #363636;
+	color: #fff;
+	text-align: center;
+	font-size: 22px;
+	letter-spacing: -1px;
+	font-weight: bolder;
+	overflow: hidden;
+}.nav-container > ul{
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: none;
+	overflow: hidden;
+}ul > .left-nav{
+	display: inline-block;
+	float: left;
+	width: 6%;
+	height: 100%;
+	padding-top: 8px;
+	border-bottom: 5px solid #cfc61f;
+}ul > .center-nav{
+	display: inline-block;
+	width: 88%;
+	height: 100%;
+	padding-top: 6px;
+	float: left;
+	color: #fff;
+	text-align: center;
+}ul > .right-nav{
+	display: inline-block;
+	width: 6%;
+	height: 100%;
+	float: left;
+	padding-top: 8px;
+	border-bottom: 5px solid #cfc61f;
+}ul > .left-nav > img{
+	width: 20px;
+	height: 20px;
 }

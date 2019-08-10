@@ -1,13 +1,17 @@
-{% extends 'base.html' %}{% load staticfiles %}
+{% extends 'base.html' %}{% load static %}
 {% block title %}Dashboard - Snarl{% endblock %}
 {% block meta %}
 	<meta name="author" description="hash3liZer" />
 {% endblock %}
 {% block css %}
-	<link rel="stylesheet" src="{% static 'css/web.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/web.css' %}" />
 {% endblock %}
 {% block body %}
-	<nav>
-		Nav Bar
+	<nav class="nav-container">
+		<ul>
+			<li class="left-nav"><img src="{% static 'img/list.png' %}" /></li>
+			<li class="center-nav">DASHBOARD</li>
+			<li class="right-nav"><img src="{% static 'img/logo.png' %}" /></li>
+		</ul>
 	</nav>
 {% endblock %}
