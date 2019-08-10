@@ -68,12 +68,12 @@ class CONFIG:
 				ffile.write('USE_L10N={}\n'.format(repr(self.VARIABLES["USETZI"])))
 			elif key == "STAURL":
 				ffile.write('STATIC_URL={}\n'.format(repr(self.VARIABLES['STAURL'])))
-			elif key == "STROOT":
-				ffile.write('STATIC_ROOT={}\n'.format(repr(self.VARIABLES['STROOT'])))
 			elif key == "JMENUI":
 				ffile.write('JET_SIDE_MENU_ITEMS={}\n'.format(repr(self.VARIABLES['JMENUI'])))
 			elif key == "JDEFTH":
 				ffile.write('JET_DEFAULT_THEME={}\n'.format(repr(self.VARIABLES['JDEFTH'])))
+			elif key == "STADIR":
+				ffile.write('STATICFILES_DIRS={}\n'.format(repr(self.VARIABLES['STADIR'])))
 		ffile.close()
 
 	def extend(self, addr):
@@ -95,8 +95,8 @@ class CONFIG:
         			'NAME': os.path.join(self.BASEPATH, 'db.sqlite3'),
     				}
 			}
+		self.VARIABLES[ "STADIR" ] = [ os.path.join(self.BASEPATH, "static") ]
 		self.VARIABLES[ "TEMPLS" ][0][ "DIRS" ] = [ os.path.join(self.BASEPATH, 'templates') ]
-		self.VARIABLES[ "STROOT" ] = os.path.join( self.BASEPATH, "static" )
 		self.VARIABLES[ "ALLOWED_HOSTS" ] = []
 		if addr:
 			self.VARIABLES[ "ALLOWED_HOSTS" ].append( addr )

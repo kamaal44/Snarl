@@ -47,7 +47,7 @@ class PARSER:
 		self.port      = self.port(    opts.port     )
 		self.conn      = self.conn(    self.bind, self.port )
 		self.init      = self.initialize( self.bind )
-		self.signal    = signal.signal( signal.SIGINT, self.handler )
+		#self.signal    = signal.signal( signal.SIGINT, self.handler )
 
 	def handler(self, sig, fr):
 		pull.halt( "Received Interrupt. Exiting!", "\r" + pull.RED )
