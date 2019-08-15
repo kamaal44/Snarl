@@ -14,4 +14,18 @@
 			<li class="right-nav"><img src="{% static 'img/logo.png' %}" /></li>
 		</ul>
 	</nav>
+
+	<div class="container">
+		<div class="slide-container">
+			<img src="{% static 'img/header.png' %}" alt="header" />
+			<ul>
+				<li>SITES</li>
+				<li>SUB FINDER</li>
+			</ul>
+		</div>
+	</div>
+{% endblock %}
+{% block js %}
+	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/web.js' %}"></script>
 {% endblock %}
