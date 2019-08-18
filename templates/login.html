@@ -1,5 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load static %}
 {% block title %}Login - Snarl{% endblock %}
+{% block css %}
+	<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+{% endblock %}
 {% block body %}
-	login
+	<form class="login-form" id="login-form">
+		<img src="{% static 'img/header.png' %}" class="login-image" />
+		<p class="error-box">Your Error Here.</p>
+		<input type="text" id="username" name="username" placeholder="Username" />
+		<input type="password" id="password" name="password" placeholder="Password" />
+		<button type="submit">Login</button>
+	</form>
 {% endblock %}

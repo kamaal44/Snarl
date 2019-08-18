@@ -20,7 +20,7 @@ class DASHBOARD:
 			else:
 				return render( request, 'login.html' )
 		else:
-			return
+			return redirect( "/login" )
 
 	def home(self, request):
 		if not self.validate( request ):
