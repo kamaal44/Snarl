@@ -24,5 +24,6 @@ urlpatterns = [
 	path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     path('dashboard/', dashboard.home),
+    path('login/', dashboard.login),
     path('', dashboard.redirect)
 ]

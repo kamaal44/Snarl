@@ -101,10 +101,13 @@
 }.statistics > .first{
 	background-color: #545454;
 	color: #fff;
+}.statistics > .second{
+	background-color: #cfc61f;
+	color: #fff;
 }.stat-division{
 	display: inline-block;
 	float: left;
-	width: 50%;
+	width: 33.33%;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	padding-left: 2%;
@@ -114,14 +117,14 @@
 }.stat-division > h4{
 	display: block;
 	text-align: left;
-	font-size: 32px;
+	font-size: 24px;
 	font-weight: 400;
 	font-family: 'Roboto', sans-serif;
 	letter-spacing: -1px;
 }.stat-division > h5{
 	display: block;
 	text-align: right;
-	font-size: 50px;
+	font-size: 46px;
 	font-weight: 200;
 	font-family: 'Roboto', sans-serif;
 	letter-spacing: -1px;

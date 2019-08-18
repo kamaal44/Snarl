@@ -1,16 +1,15 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}
 <html>
 <head>
 	<title>{% block title %}{% endblock %}</title>
+	<meta name="author" description="hash3liZer" />{% block meta %}{% endblock %}
 	<link href="https://fonts.googleapis.com/css?family=Exo+2:600|Open+Sans:400|Passion+One|Roboto+Slab:700|Ubuntu:400,700" rel="stylesheet">
-	{% block meta %}{% endblock %}
-	{% block css %}{% endblock %}
+	<link rel="stylesheet" href="{% static 'css/web.css' %}" />{% block css %}{% endblock %}
 </head>
 <body>
-	{% block body %}
-	{% endblock %}
+	{% block body %}{% endblock %}
 
-	{% block js %}
-	{% endblock %}
+	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/web.js' %}"></script>{% block js %}{% endblock %}
 </body>
 </html>

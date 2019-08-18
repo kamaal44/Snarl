@@ -1,11 +1,5 @@
 {% extends 'base.html' %}{% load static %}
 {% block title %}Dashboard - Snarl{% endblock %}
-{% block meta %}
-	<meta name="author" description="hash3liZer" />
-{% endblock %}
-{% block css %}
-	<link rel="stylesheet" href="{% static 'css/web.css' %}" />
-{% endblock %}
 {% block body %}
 	<nav class="nav-container">
 		<ul>
@@ -25,11 +19,15 @@
 		</div>
 		<menu class="statistics">
 			<div class="stat-division first">
-				<h4>DOMAINS</h4>
+				<h4>Domains</h4>
+				<h5>0</h5>
+			</div>
+			<div class="stat-division second">
+				<h4>In Process</h4>
 				<h5>0</h5>
 			</div>
 			<div class="stat-division">
-				<h4>UNCHECKED</h4>
+				<h4>Unchecked</h4>
 				<h5>0</h5>
 			</div>
 		</menu>
@@ -50,8 +48,4 @@
 			</div>
 		</div>
 	</div>
-{% endblock %}
-{% block js %}
-	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/web.js' %}"></script>
 {% endblock %}
