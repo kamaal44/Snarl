@@ -12,15 +12,23 @@ $(document).ready(function(){
 			"password": $("#password").val()
 		}
 		if((tsend[ "username" ]) && (tsend[ "password" ])){
-			$.ajax('/login', {
+			$.ajax('/login/', {
 				method: 'POST',
 				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 				data: tsend,
 				success: function(resp, status, robj){
-					console.log( "successuful" )
+					if((robj.status == 200) && (resp == "OK")){
+						location.href = "/dashboard"
+					}else{
+						var errbox = $( ".error-box" )
+						errbox.text( resp )
+						errbox.show()
+					}
 				},
 				error: function(robj, status, error){
-					console.log( "error occured" )
+					var errbox = $( ".error-box" )
+					errbox.text( "An Unknown Error Has Occured. Please Refer to the Guide. " )
+					errbox.show()
 				}
 			})
 		}else{
