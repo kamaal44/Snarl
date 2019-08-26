@@ -41,3 +41,6 @@ class DASHBOARD:
 			return self.redirect( request, "/login" )
 		else:
 			return render(request, 'dashboard.html')
+
+	def statistics(self, request):
+		return render(request, 'tabulator.html')

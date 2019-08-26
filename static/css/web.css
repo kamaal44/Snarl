@@ -183,8 +183,8 @@
 	margin-right: auto;
 	width: 100%;
 	max-width: 1000px;
-	border: 5px solid #9c9c9c;
-	border-radius: 5px;
+	border: 2px solid #8a8a8a;
+	border-radius: 3px;
 	padding: 20px;
 	padding-left: 1%;
 	padding-right: 1%;
@@ -196,17 +196,19 @@
 }.stat-table > .row > .data{
 	display: inline-block;
 	float: left;
-	width: 25%;
-	border-right: 1px solid #7d7d7d;
-	border-top: 1px solid #7d7d7d;
+	width: 16.66%;
+	border-right: 1px solid #bfbfbf;
+	border-top: 1px solid #bfbfbf;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	padding-left: 3%;
 	padding-right: 3%;
 	text-align: center;
+	font-size: 16px;
+	color: #636363;
 }.stat-table > .row > .header{
-	font-size: 20px;
-	font-weight: 900;
+	font-size: 16px;
+	font-weight: 600;
 	letter-spacing: -1px;
 	border-top: none;
 }.stat-table > .row > .last{

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Dashboard - Snarl{% endblock %}
+{% block body %}
+
+	<nav class="nav-container">
+		<ul>
+			<li class="left-nav"><img src="{% static 'img/list.png' %}" /></li>
+			<li class="center-nav">DASHBOARD</li>
+			<li class="right-nav"><img src="{% static 'img/logo.png' %}" /></li>
+		</ul>
+	</nav>
+
+	<div class="container">
+		<div class="slide-container">
+			<img src="{% static 'img/header.png' %}" alt="header" />
+			<ul>
+				<li><a href="/statistics">STATISTICS</a></li>
+				<li>SUBDOMAINS</li>
+				<li>VAL SUBDOMAINS</li>
+				<li>TAKEOVERS</li>
+				<li>HEADERS</li>
+				<li>PORTS</li>
+				<li>SCREENSHOTS</li>
+			</ul>
+		</div>
+	</div>
+
+{% endblock %}
