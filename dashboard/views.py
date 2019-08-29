@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
+from dashboard.models import ASSET
 
 class DASHBOARD:
 
@@ -47,6 +48,9 @@ class DASHBOARD:
 			return self.redirect( request, '/login' )
 		else:
 			heading = "Statistics"
+			iassets = ASSET.objects.filter( status="idle" )
+			passets = ASSET.objects.filter( status="processing" )
+			fassets = ASSET.objects.filter( status="finished" )
 
 			return render(request, 'tabulator.html', {
 					'heading': heading,
