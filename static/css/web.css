@@ -84,7 +84,13 @@
 	color: #fff;
 	letter-spacing: -1px;
 	border-right: 4px solid #cfc61f;
+	border-left: 4px solid #cfc61f;
 	text-align: center;
+}.slide-container > ul > li.active{
+	border-right: none;
+	border-left: none;
+	border-bottom: 4px solid #cfc61f;
+	border-top: 4px solid #cfc61f;
 }.slide-container > ul > li > a, .slide-container > ul > li > a:hover{
 	text-decoration: none;
 	color: #fff;
@@ -213,4 +219,42 @@
 	border-top: none;
 }.stat-table > .row > .last{
 	border-right: none;
+}h1.tab-header{
+	display: block;
+	margin-top: 30px;
+	width: 100%;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	font-size: 26px;
+	font-weight: 600;
+	letter-spacing: -1px;
+	border-top: 3px solid #abc23a;
+	height: 60px;
+	padding-top: 10px;
+}.tab-table{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	max-width: 1200px;
+	background-color: #ebebeb;
+	border-radius: 0 0 5px 5px;
+	padding-left: 3%;
+	padding-right: 3%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}.tab-table > .row{
+	display: block;
+	width: 100%;
+}.tab-table > .row > .data{
+	display: inline-block;
+	width: 16.66%;
+	float: left;
+	text-align: center;
+}.tab-table > .row > .header{
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: -1px;
 }

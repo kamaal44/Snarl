@@ -14,7 +14,7 @@
 		<div class="slide-container">
 			<img src="{% static 'img/header.png' %}" alt="header" />
 			<ul>
-				<li><a href="/statistics">STATISTICS</a></li>
+				<li class="active"><a href="/statistics">STATISTICS</a></li>
 				<li>SUBDOMAINS</li>
 				<li>VAL SUBDOMAINS</li>
 				<li>TAKEOVERS</li>
@@ -22,6 +22,18 @@
 				<li>PORTS</li>
 				<li>SCREENSHOTS</li>
 			</ul>
+		</div>
+
+		<h1 class="tab-header">{{ heading }}</h1>
+		<div class="tab-table">
+			<div class="row">
+				<div class="data header">Serial</div>
+				<div class="data header">Domain</div>
+				<div class="data header">In Process</div>
+				<div class="data header">Subdomains</div>
+				<div class="data header">Ports</div>
+				<div class="data header last">Screenshots</div>
+			</div>
 		</div>
 	</div>
 

@@ -43,4 +43,11 @@ class DASHBOARD:
 			return render(request, 'dashboard.html')
 
 	def statistics(self, request):
-		return render(request, 'tabulator.html')
+		if not self.validate( request ):
+			return self.redirect( request, '/login' )
+		else:
+			heading = "Statistics"
+
+			return render(request, 'tabulator.html', {
+					'heading': heading,
+				})
