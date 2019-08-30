@@ -48,10 +48,24 @@ class DASHBOARD:
 			return self.redirect( request, '/login' )
 		else:
 			heading = "Statistics"
-			iassets = ASSET.objects.filter( status="idle" )
-			passets = ASSET.objects.filter( status="processing" )
-			fassets = ASSET.objects.filter( status="finished" )
+			cassets = ASSET.objects.all()
+			iassets = ASSET.objects.filter( status="idle" ).all()
+			passets = ASSET.objects.filter( status="processing" ).all()
+			fassets = ASSET.objects.filter( status="finished" ).all()
+			headers = [
+				'Serial',
+				'Domain',
+				'In Process',
+				'Subdomains',
+				'Ports',
+				'Screenshots'
+			]
 
 			return render(request, 'tabulator.html', {
 					'heading': heading,
+					'headers': headers,
+					'cassets': cassets,
+					'iassets': iassets,
+					'passets': passets,
+					'fassets': fassets
 				})
