@@ -2,6 +2,10 @@
 // Project: Snarl
 // Authro: hash3liZer
 
+function refresh(){
+	return
+}
+
 $(document).ready(function(){
 	$(".left-nav").on('click', function(){
 		$( ".slide-container" ).slideToggle( "fast" )
@@ -37,5 +41,33 @@ $(document).ready(function(){
 			errbox.show()
 		}
 		return false	
+	})
+	$(".add").on('click', function(){
+		var domname = $(".exe-container > input").val()
+		if(domname){
+			$.ajax("/executioner", {
+				method: 'GET',
+				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				data: {'action': 'add', 'domain': domname},
+				success: function(json, status, response){
+					if(response.status == 200){
+						var obj = JSON.parse( json )
+						if(obj.hasOwnProperty( "success" )){
+							refresh()
+						}else{
+							console.log( obj[ "error" ] )
+						}
+					}else{
+						console.log( "Invalid Code Received. " )
+					}
+				},
+				error: function(response, status, error){
+					console.log( error )
+				}
+			})
+			return false
+		}else{
+			alert( "Please entry a domain name" )
+		}
 	})
 })

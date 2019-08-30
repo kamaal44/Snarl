@@ -40,6 +40,10 @@
 	float: left;
 	color: #fff;
 	text-align: center;
+}ul > .center-nav > a, ul > .center-nav > a:hover{
+	color: #fff;
+	cursor: pointer;
+	text-decoration: none;
 }ul > .right-nav{
 	display: inline-block;
 	width: 6%;

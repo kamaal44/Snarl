@@ -6,17 +6,17 @@ from django.db import models
 class ASSET(models.Model):
 	name     = models.CharField( max_length=30, verbose_name="Name" )
 	domain   = models.CharField( max_length=50, verbose_name="Domain" )
-	status   = models.CharField( max_length=50, verbose_name="Status", choices=(
+	status   = models.CharField( max_length=50, blank=True, verbose_name="Status", choices=(
 			('processing', 'Processing'),
 			('finished'  , 'Finished'),
 			('idle'      , 'Idle')
 		))
 	serial   = models.CharField( max_length=80, verbose_name="Serial" )
-	subdoms  = models.TextField( verbose_name="Subdomains" )
-	vsubdoms = models.TextField( verbose_name="Validated Subdomains" )
-	tkovers  = models.TextField( verbose_name="TakeOvers" )
-	ports    = models.TextField( verbose_name="Ports" )
-	headers  = models.TextField( verbose_name="Headers" )
+	subdoms  = models.TextField( blank=True, verbose_name="Subdomains" )
+	vsubdoms = models.TextField( blank=True, verbose_name="Validated Subdomains" )
+	tkovers  = models.TextField( blank=True, verbose_name="TakeOvers" )
+	ports    = models.TextField( blank=True, verbose_name="Ports" )
+	headers  = models.TextField( blank=True, verbose_name="Headers" )
 
 	def __str__(self):
 		return self.domain

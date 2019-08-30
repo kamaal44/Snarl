@@ -26,5 +26,6 @@ urlpatterns = [
     path('dashboard/', dashboard.home),
     path('login/', dashboard.login),
     path('statistics/', dashboard.statistics),
+    path('executioner/', dashboard.execute),
     path('', dashboard.redirect)
 ]
