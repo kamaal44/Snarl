@@ -6,7 +6,7 @@ from django.db import models
 class ASSET(models.Model):
 	name     = models.CharField( max_length=30, verbose_name="Name" )
 	domain   = models.CharField( max_length=50, verbose_name="Domain" )
-	status   = models.CharField( max_length=50, blank=True, verbose_name="Status", choices=(
+	status   = models.CharField( max_length=50, verbose_name="Status", choices=(
 			('processing', 'Processing'),
 			('finished'  , 'Finished'),
 			('idle'      , 'Idle')

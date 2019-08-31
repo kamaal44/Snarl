@@ -1,9 +1,27 @@
 from django.http import HttpResponse
+from django.http import HttpResponseForbidden
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from dashboard.models import ASSET
+import re
+
+class RECON:
+
+	def __init__(self, obj):
+		self.object  = obj
+		self.name    = obj.name
+		self.domain  = obj.domain
+		self.status  = obj.status
+		self.serial  = obj.serial
+		self.subdoms = obj.subdoms
+		self.tkovers = obj.tkovers
+		self.ports   = obj.ports
+		self.headers = obj.headers
+
+	def enagage(self):
+		return
 
 class DASHBOARD:
 
@@ -41,7 +59,49 @@ class DASHBOARD:
 		if not self.validate( request ):
 			return self.redirect( request, "/login" )
 		else:
-			return render(request, 'dashboard.html')
+			cassets = ASSET.objects.all()
+			iassets = ASSET.objects.filter( status="idle" ).all()
+			passets = ASSET.objects.filter( status="processing" ).all()
+			fassets = ASSET.objects.filter( status="finished" ).all()
+			return render(request, 'dashboard.html', {
+					'cassets': cassets,
+					'iassets': iassets,
+					'passets': passets,
+					'fassets': fassets
+				})
+
+	def execute(self, request):
+		if not self.validate( request ):
+			return HttpResponseForbidden()
+		else:
+			if request.method == "GET":
+				action = request.GET.get( "action" )
+				domain = request.GET.get( "domain" )
+
+				if re.match(r"^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$", domain):
+					if action == "add": 
+						if not len(ASSET.objects.filter( domain=domain ).all()):
+							asset = ASSET(name=domain.split( "." )[0], domain=domain, status="idle")
+							asset.save()
+							return HttpResponse( '{"success": "true"}' )
+						else:
+							return HttpResponse( '{"error": "Domain Already in Database. "}' )
+					elif action == "recon":
+						if not len(ASSET.objects.filter( domain=domain ).all()):
+							asset = ASSET(name=domain.split( "." )[0], domain=domain, status="processing")
+							asset.save()
+							recon = RECON( asset )
+							recon.enagage()
+							return HttpResponse( '{"success": "true"}' )
+						else:
+							return HttpResponse( '{"error": "Domain Already in Database. "}' )
+					else:
+						return HttpResponse( '{"error": "Invalid Action"}' )
+				else:
+					return HttpResponse( '{"error": "Invalid Domain"}' )
+
+			else:
+				return HttpResponseForbidden()
 
 	def statistics(self, request):
 		if not self.validate( request ):

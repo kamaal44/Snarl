@@ -42,13 +42,14 @@ $(document).ready(function(){
 		}
 		return false	
 	})
-	$(".add").on('click', function(){
+	$(".add, .recon").on('click', function(){
 		var domname = $(".exe-container > input").val()
 		if(domname){
+			var action = $(this).attr( "class" )
 			$.ajax("/executioner", {
 				method: 'GET',
 				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-				data: {'action': 'add', 'domain': domname},
+				data: {'action': action, 'domain': domname},
 				success: function(json, status, response){
 					if(response.status == 200){
 						var obj = JSON.parse( json )

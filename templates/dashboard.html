@@ -25,15 +25,15 @@
 		<menu class="statistics">
 			<div class="stat-division first">
 				<h4>Domains</h4>
-				<h5>0</h5>
+				<h5>{{ cassets|length }}</h5>
 			</div>
 			<div class="stat-division second">
 				<h4>In Process</h4>
-				<h5>0</h5>
+				<h5>{{ passets|length }}</h5>
 			</div>
 			<div class="stat-division">
 				<h4>Unchecked</h4>
-				<h5>0</h5>
+				<h5>{{ iassets|length }}</h5>
 			</div>
 		</menu>
 		<menu class="exe-container">
@@ -46,7 +46,7 @@
 
 		<div class="stat-table">
 			<div class="row">
-				<div class="data header">Serial</div>
+				<div class="data header">Action</div>
 				<div class="data header">Domain</div>
 				<div class="data header">In Process</div>
 				<div class="data header">Subdomains</div>
