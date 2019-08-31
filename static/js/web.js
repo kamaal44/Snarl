@@ -1,9 +1,27 @@
 // Javascript file
 // Project: Snarl
-// Authro: hash3liZer
+// Author: hash3liZer
 
-function refresh(){
-	return
+class Rrefresher{
+	contructor(success){
+		this.success = success
+	}
+
+	update(json, status, resp){
+		return
+	}
+
+	refresh(){
+		if(this.success){
+			$.ajax("/current-status", {
+				method: 'GET',
+				success: this.update,
+				error: function(resp, status, error){
+					console.log( error )
+				}
+			})
+		}
+	}
 }
 
 $(document).ready(function(){
@@ -54,7 +72,8 @@ $(document).ready(function(){
 					if(response.status == 200){
 						var obj = JSON.parse( json )
 						if(obj.hasOwnProperty( "success" )){
-							refresh()
+							var refresher = new Rrefresher( obj[ "success" ] )
+							refresher.refresh()
 						}else{
 							console.log( obj[ "error" ] )
 						}
