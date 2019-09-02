@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from dashboard.models import ASSET
 import re
+import json
 
 class RECON:
 
@@ -24,6 +25,8 @@ class RECON:
 		return
 
 class DASHBOARD:
+
+	PROCESSES = []
 
 	def redirect(self, request, default="/dashboard"):
 		return redirect( default )
@@ -70,6 +73,37 @@ class DASHBOARD:
 					'fassets': fassets
 				})
 
+	@csrf_exempt
+	def status(self, request):
+		if not self.validate( request ):
+			return HttpResponseForbidden()
+		else:
+			if request.method == "POST":
+				action = request.POST.get( "action" )
+				domain = request.POST.get( "domain" )
+
+				if action == "retreive":
+					retval = {}
+					if domain:
+						if domain in self.PROCESSES:
+							obj = self.PROCESSES[ domain ]
+							retval = {
+								obj.domain, obj.status, obj.serial, obj.subdoms, obj.tkovers, obj.ports, obj.headers
+							}
+							return HttpResponse(json.dumps( retval ))
+						else:
+
+							return HttpResponse('{}')
+					else:
+						for domain in list(self.PROCESSES.keys()):
+							obj = self.PROCESSES[ domain ]
+
+				else:
+					return HttpResponse('{"error": "Invalid Action"}')
+			else:
+				return HttpResponseForbidden()
+
+
 	def execute(self, request):
 		if not self.validate( request ):
 			return HttpResponseForbidden()
@@ -91,7 +125,8 @@ class DASHBOARD:
 							asset = ASSET(name=domain.split( "." )[0], domain=domain, status="processing")
 							asset.save()
 							recon = RECON( asset )
-							recon.enagage()
+							recon.engage()
+							self.PROCESSES[ domain ] = recon
 							return HttpResponse( '{"success": "true"}' )
 						else:
 							return HttpResponse( '{"error": "Domain Already in Database. "}' )
