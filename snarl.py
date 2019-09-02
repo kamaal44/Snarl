@@ -84,8 +84,8 @@ class PARSER:
 			application = GETWSGI()
 
 			pull.uprun( "Configuration Done. Uprnning Migrations Now. ", pull.DARKCYAN )
-			DJANGOCALL('makemigrations', stdout=open( os.devnull, "w" ))
-			DJANGOCALL('migrate', stdout=open( os.devnull, "w" ))
+			DJANGOCALL('makemigrations')
+			DJANGOCALL('migrate')
 			pull.halt( "Migrations Applied Successfuly. Exiting Now!", pull.GREEN )
 		else:
 			config = CONFIG()
