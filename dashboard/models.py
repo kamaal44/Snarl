@@ -22,6 +22,6 @@ class ASSET(models.Model):
 		return self.domain
 
 	class Meta:
-		db_table = 'assets'
+		db_table     = 'assets'
 		verbose_name = 'Asset'
 		verbose_name_plural = 'Assets'
