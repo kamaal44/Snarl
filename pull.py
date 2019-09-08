@@ -1,9 +1,32 @@
 import os
 import sys
+import random
 
-__logo__ = """%s
-  ______            _____              ______
- /_/_/__/      |    | \\  \       |     | |  /
+__logo__ = """     _______               ___    ________
+    /_______\\   |\\    |   / | \\   ||_____\\\\   |||
+   /         \\  | \\   |  /__|__\\  ||      \\\\  |||
+   ===========  |  \\  | ||     || ||  ____//  |||
+   \\_________/  |   \\ | ||_____|| ||  \\\\      |||||||||
+    \\_______/   |    \\| ||     || ||   \\\\     |||||||||
+"""
+
+__help__ = """Usage:
+snarl.py [--argument] [value]
+
+Args              Description
+-h, --help        Throwback this Manual. 
+-b, --bind        IP address or domain to bind to. 
+-p, --port        Port to bind on.
+-v, --verbose     Prints verbose message and give
+                  more details. 
+-d, --debug       Turn on the debug option for Django
+                  app. For Debugging Purpose.
+    --migrate     Check for newly applied changes in
+                  app and make migrations.
+    --configure   Configure Database setting, if you
+                  are going to deploy the application.
+    --create-user Create a new user for application.
+                  Email is optional. 
 """
 
 class PULL:
@@ -94,22 +117,26 @@ class PULL:
 		for (key, val) in self.MIXTURE.items():
 			self.MIXTURE[ key ] = ''
 
-	def gthen(self, tshow, cc='', *colors):
+	def gthen(self, tshow, *colors):
+		cc = ''
 		for color in colors:
 			cc += color
 		print( "%s[>]%s %s" % ( cc, self.END, tshow ) )
 
-	def lthen(self, tshow, cc='', *colors):
+	def lthen(self, tshow, *colors):
+		cc = ''
 		for color in colors:
 			cc += color
 		print( "%s[<]%s %s" % ( cc, self.END, tshow ) )
 
-	def uprun(self, tshow, cc='', *colors):
+	def uprun(self, tshow, *colors):
+		cc = ''
 		for color in colors:
 			cc += color
 		print( "%s[^]%s %s" % ( cc, self.END, tshow ) )
 
-	def info(self, tshow, cc='', *colors):
+	def info(self, tshow, *colors):
+		cc = ''
 		for color in colors:
 			cc += color
 		print( "%s[*]%s %s" % ( cc, self.END, tshow ) )
@@ -119,9 +146,31 @@ class PULL:
 			cc += color
 		return input( "%s[?]%s %s" % (cc, self.END, tshow) )
 
-	def halt(self, tshow, cc='', exit=1, *colors):
+	def halt(self, tshow, exit=1, *colors):
+		cc = ''
 		for color in colors:
 			cc += color
 		print( "%s[~]%s %s" % ( cc, self.END, tshow ) )
 		if exit:
 			sys.exit(-1)
+
+	def help(self):
+		print( __help__ )
+		sys.exit(0)
+
+	def logo(self):
+		color = random.choice([
+				self.DARKCYAN,
+				self.RED,
+				self.YELLOW,
+			])
+		print(
+			"{mcolor}{bcolor}{body}{ecolor}\n\t\t{amcolor}@hash3liZer v1.0{aecolor}\n".format(
+					mcolor=color,
+					bcolor=self.BOLD,
+					body=__logo__,
+					ecolor=self.END,
+					amcolor=self.BOLD,
+					aecolor=self.END
+				)
+			)

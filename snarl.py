@@ -40,6 +40,7 @@ class EXECUTIONER:
 class PARSER:
 
 	def __init__(self, opts):
+		self.help      = self.help( opts.help )
 		self.configure = self.configure( opts.configure )
 		self.migrate   = self.migrate( opts.migrate  )
 		self.cuser     = self.create( opts.cuser )
@@ -48,6 +49,10 @@ class PARSER:
 		self.conn      = self.conn(    self.bind, self.port )
 		self.init      = self.initialize( self.bind )
 		#self.signal    = signal.signal( signal.SIGINT, self.handler )
+
+	def help(self, bl):
+		if bl:
+			pull.help()
 
 	def handler(self, sig, fr):
 		pull.halt( "Received Interrupt. Exiting!", "\r" + pull.RED )
@@ -136,7 +141,8 @@ class PARSER:
 			pull.halt( "Not able to Bind to Address. Check Your Address & Port!", pull.RED, pull.BOLD )
 
 def main():
-	parser = argparse.ArgumentParser( add_help=True )
+	parser = argparse.ArgumentParser( add_help=False )
+	parser.add_argument( '-h', '--help'   , dest="help"     , default=False, action="store_true" )
 	parser.add_argument( '-b', '--bind'   , dest="bind"     , default=None , type=str            )
 	parser.add_argument( '-p', '--port'   , dest="port"     , default=8080 , type=int            )
 	parser.add_argument( '-v', '--verbose', dest="verbose"  , default=False, action="store_true" )
@@ -153,4 +159,5 @@ def main():
 	pull.lthen( "Exiting!", pull.RED )
 
 if __name__ == "__main__":
+	pull.logo()
 	main()
