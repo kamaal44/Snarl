@@ -74,6 +74,10 @@ class CONFIG:
 				ffile.write('JET_DEFAULT_THEME={}\n'.format(repr(self.VARIABLES['JDEFTH'])))
 			elif key == "STADIR":
 				ffile.write('STATICFILES_DIRS={}\n'.format(repr(self.VARIABLES['STADIR'])))
+			elif key == "LOGCON":
+				ffile.write('LOGGING_CONFIG={}\n'.format(repr(self.VARIABLES['LOGCON'])))
+			elif key == "LOGGIN":
+				ffile.write('LOGGING={}\n'.format(repr(self.VARIABLES['LOGGIN'])))
 		ffile.close()
 
 	def extend(self, addr):
