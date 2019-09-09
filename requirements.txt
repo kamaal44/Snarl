@@ -1,3 +1,4 @@
-django
-django-jet
+django==2.2.3
+django-jet==1.0.8
 google-api-python-client==1.4.1
+psutil==5.6.3
