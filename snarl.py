@@ -29,20 +29,20 @@ class EXECUTIONER:
 
 	def bind(self):
 		application = GETWSGI()
-		pull.print("^", "Binding the Server to Address: %s:%s" % (self.address, self.port), pull.CYAN)
+		pull.print("^", "Binding the Server to Address: %s:%s" % (self.address, self.port), pull.DARKCYAN)
 		pull.print("*", "You can Access Your Application Now!", pull.YELLOW)
 		if self.debug:
 			pull.linebreak(1)
 			DJANGOCALL(
 				'runserver', 
 				"{}:{}".format(self.address, self.port),
-				'--noreload',
 				stdout=sys.stdout
 			)
 		else:
 			DJANGOCALL(
 				'runserver', 
 				"{}:{}".format(self.address, self.port),
+				'--noreload',
 				stdout=self.npointer
 			)
 
@@ -53,6 +53,7 @@ class PARSER:
 		self.npointer  = open(os.devnull, "w")
 		self.verbose   = opts.verbose
 		self.debug     = opts.debug
+		self.signal    = signal.signal( signal.SIGINT, self.handler )
 		self.configure = self.configure( opts.configure )
 		self.migrate   = self.migrate( opts.migrate  )
 		self.cuser     = self.create( opts.cuser )
@@ -60,11 +61,10 @@ class PARSER:
 		self.port      = self.port(    opts.port     )
 		self.conn      = self.conn(    self.bind, self.port )
 		self.init      = self.initialize( self.bind )
-		self.signal    = signal.signal( signal.SIGINT, self.handler )
 
 	def handler(self, sig, fr):
 		pull.halt(
-			"Cleaning Processes and Exiting ...", True, "\r", pull.RED
+			"Cleaning Processes and Exiting ...", (True if not self.debug else False), "\r", pull.RED
 			)
 		for proc in psutil.process_iter():
 			try:
@@ -82,21 +82,29 @@ class PARSER:
 
 	def configure(self, conf):
 		if conf:
-			dbase = pull.input("Enter Your Database Name: ", False, pull.PURPLE)
-			serve = pull.input("Enter Your Server Name [localhost]: ", False, pull.PURPLE)
-			uname = pull.input("Enter Database Username: ", False, pull.PURPLE)
-			passw = pull.input("Enter Database Password: ", False, pull.PURPLE)
+			toset = pull.input("-", "Do you Want To Configure Your Database Credentials? [Y/n] ", ("y", "n"), pull.BLUE)
+			if toset:
 
-			pull.print("^", "Checking Database Connection. Connecting!", pull.DARKCYAN )
-			try:
-				pymysql.connect(serve, uname, passw, dbase)
-			except pymysql.err.OperationalError:
-				pull.halt("Access Denied for the user. Check Credentials and Server Status!", True, pull.RED)
+				dbase = pull.input("?", "Enter Your Database Name: ", False, pull.GREEN)
+				serve = pull.input("?", "Enter Your Server Name [localhost]: ", False, pull.GREEN)
+				uname = pull.input("?", "Enter Database Username: ", False, pull.GREEN)
+				passw = pull.input("?", "Enter Database Password: ", False, pull.GREEN)
 
-			config = CONFIG()
-			config.read()
-			config.dgen()
-			config.write()
+				pull.print("^", "Checking Database Connection. Connecting!", pull.DARKCYAN )
+				try:
+					pymysql.connect(serve, uname, passw, dbase)
+				except pymysql.err.OperationalError:
+					pull.halt("Access Denied for the user. Check Credentials and Server Status!", True, pull.RED)
+
+				config = CONFIG()
+				config.read()
+				config.dgen()
+				config.write()
+
+			else:
+				pull.print("*", "Skipped Configuration of Database. Proceeding now. ", pull.YELLOW)
+
+		pull.halt("Done Configurations. Exiting", True, pull.RED)
 
 	def migrate(self, mig):
 		if mig:
@@ -177,8 +185,10 @@ def main():
 	parser.add_argument( '--configure'    , dest="configure", default=False, action="store_true" )
 	parser.add_argument( '--create-user'  , dest="cuser"    , default=False, action="store_true" )
 
+	pull.print("^", "Parsing Uplifting Configurations and Files. ", pull.DARKCYAN)
 	options = parser.parse_args()
 	parser = PARSER( options )
+	pull.print("*", "Got Clean Status. Processing now. ", pull.YELLOW)
 
 	pull.print(">", "Firing UP Snarl. Have a Seat! ", pull.DARKCYAN )
 	picker = EXECUTIONER(

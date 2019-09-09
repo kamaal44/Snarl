@@ -114,49 +114,64 @@ class PULL:
 			'LINEUP': ''
 		}
 
-		for (key, val) in self.MIXTURE.items():
+		for key in list(self.MIXTURE.items()):
 			self.MIXTURE[ key ] = ''
 
-	def gthen(self, tshow, *colors):
-		cc = ''
-		for color in colors:
-			cc += color
-		print( "%s[>]%s %s" % ( cc, self.END, tshow ) )
+	def linebreak(self, howmany=1):
+		for n in range(0, howmany):
+			sys.stdout.write( "\n" )
 
-	def lthen(self, tshow, *colors):
+	def print(self, sig, statement, *colors):
 		cc = ''
-		for color in colors:
-			cc += color
-		print( "%s[<]%s %s" % ( cc, self.END, tshow ) )
+		cc = "".join([color for color in colors])
+		print("{mix}[{sig}]{end} {statement}".format(
+				sig=sig,
+				mix=cc,
+				end=self.END,
+				statement=statement
+			))
 
-	def uprun(self, tshow, *colors):
+	def input(self, sig, statement, validation=(), *colors):
 		cc = ''
-		for color in colors:
-			cc += color
-		print( "%s[^]%s %s" % ( cc, self.END, tshow ) )
+		cc = "".join([color for color in colors])
+		value = input("{mix}[{sig}]{end} {statement}".format(
+					sig=sig,
+					mix=cc,
+					end=self.END,
+					statement=statement
+				))
+		if value:
+			if validation:
+				if validation[0].lower() == value.lower():
+					return True
+				elif validation[1].lower() == value.lower():
+					return False
+				else:
+					self.print("!", "Something Not Valid here. Enter a Valid Value.", self.RED)
+					value = self.input(sig, statement, validation, cc)
+			else:
+				return value
+		else:
+			self.print("!", "Something Not Valid here. Enter a Valid Value.", self.RED)
+			value = self.input(statement, validation, cc)			
 
-	def info(self, tshow, *colors):
+		return value
+
+	def halt(self, statement, exit, *colors):
 		cc = ''
-		for color in colors:
-			cc += color
-		print( "%s[*]%s %s" % ( cc, self.END, tshow ) )
-
-	def ask(self, tshow, cc='', *colors):
-		for color in colors:
-			cc += color
-		return input( "%s[?]%s %s" % (cc, self.END, tshow) )
-
-	def halt(self, tshow, exit=1, *colors):
-		cc = ''
-		for color in colors:
-			cc += color
-		print( "%s[~]%s %s" % ( cc, self.END, tshow ) )
+		cc = "".join([color for color in colors])
+		print("{mix}[~]{end} {statement}".format(
+				mix=cc,
+				end=self.END,
+				statement=statement
+			))
 		if exit:
 			sys.exit(-1)
 
 	def help(self):
-		print( __help__ )
-		sys.exit(0)
+		sys.exit(
+				__help__
+			)
 
 	def logo(self):
 		color = random.choice([
