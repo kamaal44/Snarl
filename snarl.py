@@ -50,17 +50,20 @@ class PARSER:
 
 	def __init__(self, opts):
 		self.help      = self.help( opts.help )
+
 		self.npointer  = open(os.devnull, "w")
 		self.verbose   = opts.verbose
 		self.debug     = opts.debug
-		self.signal    = signal.signal( signal.SIGINT, self.handler )
-		self.configure = self.configure( opts.configure )
-		self.migrate   = self.migrate( opts.migrate  )
-		self.cuser     = self.create( opts.cuser )
 		self.bind      = self.bind(    opts.bind     )
 		self.port      = self.port(    opts.port     )
-		self.conn      = self.conn(    self.bind, self.port )
+
+		self.signal    = signal.signal( signal.SIGINT, self.handler )
+
+		self.configure = self.configure( opts.configure )
+		self.migrate   = self.migrate( opts.migrate  )
 		self.init      = self.initialize( self.bind )
+		self.cuser     = self.create( opts.cuser )
+		self.conn      = self.conn(    self.bind, self.port )
 
 	def handler(self, sig, fr):
 		pull.halt(
@@ -97,46 +100,45 @@ class PARSER:
 					pull.halt("Access Denied for the user. Check Credentials and Server Status!", True, pull.RED)
 
 				config = CONFIG()
-				config.read()
-				config.dgen()
-				config.write()
+				config.read_variables()
+				config.db_create(dbase, serve, uname, passw)
+				config.write_variables()
 
 			else:
 				pull.print("*", "Skipped Configuration of Database. Proceeding now. ", pull.YELLOW)
 
-		pull.halt("Done Configurations. Exiting", True, pull.RED)
+			pull.halt("Done Configurations. Exiting", True, pull.RED)
 
 	def migrate(self, mig):
 		if mig:
 			pull.print(
 				"*", "Migration Phase. Initializing File & Configurations.", pull.YELLOW
 			)
-			config = CONFIG()
-			config.read()
-			config.kgen()
-			config.write()
 
-			self.initialize()
+			config = CONFIG()
+			config.read_variables()
+			config.generate_key()
+			config.write()
 
 			time.sleep( 3 )
 			application = GETWSGI()
 
 			pull.print("^", "Configuration Done. Uprnning Migrations Now. ", pull.DARKCYAN)
-			DJANGOCALL('makemigrations', stdout=open( os.devnull, "w" ))
-			DJANGOCALL('migrate', stdout=open( os.devnull, "w" ))
+			DJANGOCALL('makemigrations', stdout=(sys.stdout if self.debug else self.npointer))
+			pull.verbose("*", "Files Modified. Running Into Final Stage. ", self.verbose, pull.YELLOW)
+			DJANGOCALL('migrate', stdout=(sys.stdout if self.debug else self.npointer))
 			pull.halt("Migrations Applied Successfuly. Exiting Now!", True, pull.GREEN)
-		else:
-			config = CONFIG()
-			if not os.path.isfile( config.SETTPATH ):
-				pull.halt("Application not yet initialized. Run the migrations first. See Manual!", True, pull.RED)
+
+			return True
+		return False
 
 	def create(self, cuser):
 		if cuser:
 			django.setup()
 			from django.contrib.auth.models import User as SUPERUSER
-			uname = pull.input( "Enter Username for the admin user: ", False, pull.YELLOW )
-			email = pull.input( "Enter Email for the user: ", False, pull.YELLOW )
-			passw = pull.input( "Enter Password for the user: ", False, pull.YELLOW )
+			uname = pull.input("?", "Enter Username for the admin user: ", False, pull.YELLOW )
+			email = pull.input("?", "Enter Email for the user: ", False, pull.YELLOW )
+			passw = pull.input("?", "Enter Password for the user: ", False, pull.YELLOW )
 
 			if uname and passw:
 				SUPERUSER.objects.create_superuser( uname, email, passw )
@@ -146,9 +148,16 @@ class PARSER:
 
 	def initialize(self, addr=""):
 		config = CONFIG()
-		config.read()
-		config.extend( addr )
-		config.generate()
+
+		if os.path.isfile(config.SETTPATH) or self.migrate:
+			config.read()
+			config.extend(
+				addr,
+				self.debug
+			)
+			config.generate()
+		else:
+			pull.halt("Migrations aren't applied. Apply them first!", True, pull.RED)
 
 	def bind(self, bd):
 		if bd:

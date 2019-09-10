@@ -131,6 +131,17 @@ class PULL:
 				statement=statement
 			))
 
+	def print(self, sig, statement, verbose, *colors):
+		if verbose:
+			cc = ''
+			cc = "".join([color for color in colors])
+			print("{mix}[{sig}]{end} {statement}".format(
+					sig=sig,
+					mix=cc,
+					end=self.END,
+					statement=statement
+				))
+
 	def input(self, sig, statement, validation=(), *colors):
 		cc = ''
 		cc = "".join([color for color in colors])
