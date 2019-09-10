@@ -131,7 +131,7 @@ class PULL:
 				statement=statement
 			))
 
-	def print(self, sig, statement, verbose, *colors):
+	def verbose(self, sig, statement, verbose, *colors):
 		if verbose:
 			cc = ''
 			cc = "".join([color for color in colors])
